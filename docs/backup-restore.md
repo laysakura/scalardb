@@ -27,15 +27,15 @@ That means that you need to create a consistent snapshot by dumping all tables i
 The ways to create transactional backups are different among each database product.
 We show some examples for some database products but you are requested to find the safe ways to a transactional backup from your databases at your own risk.
 
-#### MySQL
+#### MySQL (backup)
 
 Use the `mysqldump` command with `--single-transaction` option.
 
-#### PostgreSQL
+#### PostgreSQL (backup)
 
 Use the `pg_dump` command.
 
-#### Amazon RDS or Azure Database for MySQL/PostgreSQL
+#### Amazon RDS or Azure Database for MySQL/PostgreSQL (backup)
 
 You can restore to any point within the backup retention period with the automated backup feature.
 
@@ -52,7 +52,11 @@ Note that when you use a point-in-time-restore/recovery mechanism, it is recomme
 Otherwise, the time you get as a paused duration might be too different from the time in which the pause was actually conducted, which could restore to a point where ongoing transactions exist.
 Also, it is recommended to pause a long enough time (e.g., 10 seconds) and use the mid-time of the paused duration as a restore point since clock synchronization cannot perfectly synchronize clocks between nodes.
 
-#### Database-specific ways to create a transactionally-consistent backup   
+#### Database-specific ways to create a transactionally-consistent backup
+
+**Databases with transaction support**
+
+See subsections in the [online backup](#online-backup).
 
 **Cassandra**
 
@@ -78,12 +82,17 @@ To specify a transactionally-consistent restore point, please pause the Scalar D
 
 ## Restore Backup
 
-### JDBC databases
+### MySQL (restore)
 
-You need to restore backups appropriately depending on how the backups are created.
-For example, if you use MySQL and `mysqldump` to create a backup file, use `mysql` command to restore the file as specified [in the MySQL doc](https://dev.mysql.com/doc/mysql-backup-excerpt/8.0/en/reloading-sql-format-dumps.html). If you use PostgreSQL and `pg_dump` to create a backup file, use `psql` command to restore the file as specified in [the PostgreSQL doc](https://www.postgresql.org/docs/current/backup-dump.html#BACKUP-DUMP-RESTORE).
-If you use Amazon RDS (Relational Database Service) or Azure Database for MySQL/PostgreSQL,
-you can restore to any point within the backup retention period with the automated backup feature.
+If you use MySQL and `mysqldump` to create a backup file, use `mysql` command to restore the file as specified [in the MySQL doc](https://dev.mysql.com/doc/mysql-backup-excerpt/8.0/en/reloading-sql-format-dumps.html).
+
+### PostgreSQL (restore)
+
+If you use PostgreSQL and `pg_dump` to create a backup file, use `psql` command to restore the file as specified in [the PostgreSQL doc](https://www.postgresql.org/docs/current/backup-dump.html#BACKUP-DUMP-RESTORE).
+
+### Amazon RDS or Azure Database for MySQL/PostgreSQL (restore)
+
+You can restore to any point within the backup retention period with the automated backup feature.
 
 ### Cassandra
 
